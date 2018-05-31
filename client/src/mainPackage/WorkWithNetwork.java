@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,19 +21,20 @@ public class WorkWithNetwork {
 
         JFrame f = new JFrame("Client");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(300, 200);
-        f.setLayout(new BorderLayout());
+        f.setSize(240, 250);
+       // f.setLayout(new BorderLayout());
         f.setVisible(true);
 
         area = new JTextArea();
         field = new JTextField(20);
-        final JButton selectBut = new JButton("Select");
+        final JButton selectBut = new JButton("Выбрать");
 
-        final JButton but = new JButton("Send");
+        final JButton but = new JButton("Отправить");
         but.setEnabled(false);
-        f.add(but, BorderLayout.SOUTH);
-        f.add(area);
-        f.add(selectBut, BorderLayout.NORTH);
+        f.setLayout(null);
+        f.add(selectBut).setBounds(10,10,200,30);
+        f.add(area).setBounds(10,50,200,100);
+        f.add(but).setBounds(10,160,200,30);
 
         but.addActionListener(new ActionListener() {
 
@@ -106,6 +106,7 @@ public class WorkWithNetwork {
                 int count;
 
                 while((count = in.read(buffer)) != -1){
+                    Encryption.makeEncryption(buffer);
                     outD.write(buffer, 0, count);
                 }
                 outD.flush();
@@ -118,11 +119,4 @@ public class WorkWithNetwork {
         }
     }
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException {
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        }
-        catch(Exception e){}
-        new WorkWithNetwork();
-    }
 }
